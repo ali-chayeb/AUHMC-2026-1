@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUHMC 2026 — المؤتمر الأول لمشفى حلب الجامعي</title>
+<meta name="description" content="المؤتمر العلمي الأول لمشفى حلب الجامعي — معًا نحو نظام صحي متكامل.. رؤى طبية متجددة لغدٍ صحي أفضل">
+<meta name="theme-color" content="#002366">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ====== NAVBAR ====== -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <button class="nav-toggle" id="navToggle" aria-label="فتح القائمة">
+      <i class="fas fa-bars"></i>
+    </button>
+    <a href="#" class="nav-logo" data-nav="home">
+      <span class="logo-icon">
+        <svg viewBox="0 0 48 48" width="36" height="36">
+          <circle cx="24" cy="24" r="22" fill="#002366" stroke="#D4AF37" stroke-width="2"/>
+          <text x="24" y="20" text-anchor="middle" fill="#D4AF37" font-size="10" font-family="Inter">☤</text>
+          <text x="24" y="34" text-anchor="middle" fill="#fff" font-size="7" font-family="Inter">2026</text>
+        </svg>
+      </span>
+      <span class="logo-text">AUHMC <span class="logo-year">2026</span></span>
+    </a>
+    <div class="nav-title">
+      <span class="nav-title-ar">المؤتمر العلمي الأول لمشفى حلب الجامعي</span>
+      <span class="nav-title-en">1<sup>st</sup> Aleppo University Hospital Medical Conference</span>
+      <span class="nav-title-code">AUHMC 2026</span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" class="active" data-nav="home"><i class="fas fa-home"></i> الرئيسية</a></li>
+      <li><a href="#" data-nav="tracks"><i class="fas fa-flask"></i> المسارات</a></li>
+      <li><a href="#" data-nav="schedule"><i class="fas fa-calendar-alt"></i> البرنامج</a></li>
+      <li><a href="#" data-nav="committees"><i class="fas fa-users"></i> اللجان</a></li>
+      <li><a href="#" data-nav="posters"><i class="fas fa-image"></i> البوسترات</a></li>
+      <li><a href="#" data-nav="registration"><i class="fas fa-user-plus"></i> التسجيل</a></li>
+      <li><a href="#" data-nav="sponsors"><i class="fas fa-handshake"></i> الرعاة</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ====== MAIN CONTENT ====== -->
+<main>
+
+  <!-- ====== HOME SECTION ====== -->
+  <section class="section active" id="section-home">
+    <header class="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-badge">المؤتمر العلمي الأول</div>
+        <h1 class="hero-title">مشفى حلب الجامعي</h1>
+        <p class="hero-subtitle">AUH Medical Conference 2026</p>
+        <p class="hero-quote">"معًا نحو نظام صحي متكامل.. رؤى طبية متجددة لغدٍ صحي أفضل"</p>
+        <div class="countdown" id="countdown">
+          <div class="cd-item"><span class="cd-num" id="cd-days">00</span><span class="cd-label">يوم</span></div>
+          <div class="cd-item"><span class="cd-num" id="cd-hours">00</span><span class="cd-label">ساعة</span></div>
+          <div class="cd-item"><span class="cd-num" id="cd-mins">00</span><span class="cd-label">دقيقة</span></div>
+          <div class="cd-item"><span class="cd-num" id="cd-secs">00</span><span class="cd-label">ثانية</span></div>
+        </div>
+        <div class="hero-actions">
+          <a href="#" class="btn btn-gold" data-nav="registration"><i class="fas fa-user-plus"></i> تسجيل الآن</a>
+          <a href="#" class="btn btn-outline" data-nav="schedule"><i class="fas fa-calendar-alt"></i> البرنامج العلمي</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="container section-pad">
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="about-icon"><i class="fas fa-calendar-day"></i></div>
+          <div class="about-num">5</div>
+          <div class="about-text">أيام علمية</div>
+        </div>
+        <div class="about-card">
+          <div class="about-icon"><i class="fas fa-flask"></i></div>
+          <div class="about-num">8</div>
+          <div class="about-text">مسارات بحثية</div>
+        </div>
+        <div class="about-card">
+          <div class="about-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+          <div class="about-num">40+</div>
+          <div class="about-text">محاضرة وورشة</div>
+        </div>
+        <div class="about-card">
+          <div class="about-icon"><i class="fas fa-user-md"></i></div>
+          <div class="about-num">300+</div>
+          <div class="about-text">مشارك</div>
+        </div>
+      </div>
+
+      <div class="section-title">
+        <h2>عن المؤتمر</h2>
+        <div class="title-line"></div>
+      </div>
+      <p class="about-desc">
+        ينطلق المؤتمر العلمي الأول لمشفى حلب الجامعي (AUHMC 2026) ليجمع الأطباء الاختصاصيين،
+        المقيمين، والكوادر التمريضية من مختلف المشافي التعليمية والصحية في سورية،
+        في محفل أكاديمي رائد يهدف إلى تبادل الخبرات، عرض أحدث المستجدات الطبية،
+        وتطوير المهارات السريرية عبر محاضرات وورش عمل تفاعلية.
+      </p>
+    </div>
+  </section>
+
+  <!-- ====== TRACKS SECTION ====== -->
+  <section class="section" id="section-tracks">
+    <div class="container section-pad">
+      <div class="section-title">
+        <h2>المسارات العلمية</h2>
+        <div class="title-line"></div>
+        <p class="section-subtitle">8 مسارات بحثية تغطي مختلف الاختصاصات الطبية</p>
+      </div>
+      <div class="tracks-grid" id="tracksGrid"></div>
+    </div>
+  </section>
+
+  <!-- ====== SCHEDULE SECTION ====== -->
+  <section class="section" id="section-schedule">
+    <div class="container section-pad">
+      <div class="section-title">
+        <h2>البرنامج العلمي التفاعلي</h2>
+        <div class="title-line"></div>
+        <p class="section-subtitle">جدول زمني متطور للأيام الخمسة مع فلترة حسب القاعة أو المسار</p>
+      </div>
+      <div class="schedule-controls">
+        <div class="day-tabs" id="dayTabs">
+          <button class="day-tab active" data-day="1">اليوم الأول</button>
+          <button class="day-tab" data-day="2">اليوم الثاني</button>
+          <button class="day-tab" data-day="3">اليوم الثالث</button>
+          <button class="day-tab" data-day="4">اليوم الرابع</button>
+          <button class="day-tab" data-day="5">اليوم الخامس</button>
+        </div>
+        <select class="schedule-filter" id="trackFilter">
+          <option value="all">جميع المسارات</option>
+        </select>
+      </div>
+      <div class="schedule-grid" id="scheduleGrid"></div>
+    </div>
+  </section>
+
+  <!-- ====== COMMITTEES SECTION ====== -->
+  <section class="section" id="section-committees">
+    <div class="container section-pad">
+      <div class="section-title">
+        <h2>اللجان المنظمة</h2>
+        <div class="title-line"></div>
+        <p class="section-subtitle">الهيكل التنظيمي للمؤتمر</p>
+      </div>
+      <div class="committees-grid" id="committeesGrid"></div>
+    </div>
+  </section>
+
+  <!-- ====== POSTERS SECTION ====== -->
+  <section class="section" id="section-posters">
+    <div class="container section-pad">
+      <div class="section-title">
+        <h2>معرض الملصقات العلمية</h2>
+        <div class="title-line"></div>
+        <p class="section-subtitle">عرض البوسترات العلمية المقدمة في المؤتمر</p>
+      </div>
+      <div class="posters-grid" id="postersGrid">
+        <div class="poster-placeholder">
+          <i class="fas fa-image"></i>
+          <p>سيتم إضافة البوسترات العلمية قريباً</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== REGISTRATION SECTION ====== -->
+  <section class="section" id="section-registration">
+    <div class="container section-pad">
+      <div class="section-title">
+        <h2>التسجيل والمشاركة</h2>
+        <div class="title-line"></div>
+        <p class="section-subtitle">سجل للحضور أو قدم بحثك العلمي في المؤتمر</p>
+      </div>
+
+      <!-- Tabs: Attendance / Submission -->
+      <div class="reg-tabs">
+        <button class="reg-tab active" data-regtab="attendance"><i class="fas fa-user-plus"></i> تسجيل حضور</button>
+        <button class="reg-tab" data-regtab="submission"><i class="fas fa-flask"></i> تقديم بحث علمي</button>
+      </div>
+
+      <!-- Attendance Form -->
+      <div class="reg-panel active" id="regPanel-attendance">
+        <div class="reg-grid">
+          <div class="reg-form-card">
+            <h3><i class="fas fa-user-plus"></i> نموذج التسجيل</h3>
+            <form id="regForm" class="reg-form">
+              <div class="form-group">
+                <label for="regName">الاسم الكامل <span>*</span></label>
+                <input type="text" id="regName" required placeholder="أدخل اسمك الثلاثي">
+              </div>
+              <div class="form-group">
+                <label for="regPhone">رقم الهاتف <span>*</span></label>
+                <input type="tel" id="regPhone" required placeholder="09xxxxxxxx">
+              </div>
+              <div class="form-group">
+                <label for="regEmail">البريد الإلكتروني</label>
+                <input type="email" id="regEmail" placeholder="example@domain.com">
+              </div>
+              <div class="form-group">
+                <label for="regSpecialty">الاختصاص</label>
+                <input type="text" id="regSpecialty" placeholder="الاختصاص أو السنة الدراسية">
+              </div>
+              <div class="form-group">
+                <label for="regWorkplace">جهة العمل</label>
+                <input type="text" id="regWorkplace" placeholder="المشفى أو الجامعة">
+              </div>
+              <div class="form-group full">
+                <label>ورشات العمل المطلوبة</label>
+                <div class="ws-checkboxes" id="wsCheckboxes"></div>
+              </div>
+              <button type="submit" class="btn btn-gold btn-submit">
+                <i class="fas fa-paper-plane"></i> إرسال التسجيل
+              </button>
+            </form>
+            <div class="reg-success" id="regSuccess" style="display:none;">
+              <i class="fas fa-check-circle"></i>
+              <h3>تم تسجيلك بنجاح!</h3>
+              <p>سيتم التواصل معك قريباً لتأكيد الحضور.</p>
+            </div>
+          </div>
+          <div class="reg-workshops-card">
+            <h3><i class="fas fa-tools"></i> ورشات العمل</h3>
+            <div id="workshopsList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submission Form -->
+      <div class="reg-panel" id="regPanel-submission">
+        <div class="reg-grid">
+          <div class="reg-form-card">
+            <h3><i class="fas fa-flask"></i> تقديم بحث أو ملصق علمي</h3>
+            <form id="submitForm" class="reg-form">
+              <div class="form-group">
+                <label for="subName">الاسم الكامل <span>*</span></label>
+                <input type="text" id="subName" required placeholder="اسم الباحث">
+              </div>
+              <div class="form-group">
+                <label for="subPhone">رقم الهاتف <span>*</span></label>
+                <input type="tel" id="subPhone" required placeholder="09xxxxxxxx">
+              </div>
+              <div class="form-group">
+                <label for="subEmail">البريد الإلكتروني</label>
+                <input type="email" id="subEmail" placeholder="example@domain.com">
+              </div>
+              <div class="form-group">
+                <label for="subDegree">الدرجة العلمية</label>
+                <select id="subDegree">
+                  <option value="">اختر...</option>
+                  <option value="طبيب مقيم">طبيب مقيم</option>
+                  <option value="أخصائي">أخصائي</option>
+                  <option value="أستاذ">أستاذ</option>
+                  <option value="ممرض">ممرض</option>
+                  <option value="طالب">طالب</option>
+                  <option value="باحث">باحث</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="subAffiliation">جهة الانتساب</label>
+                <input type="text" id="subAffiliation" placeholder="المشفى / الجامعة / مركز البحث">
+              </div>
+              <div class="form-group full">
+                <label for="subTitle">عنوان البحث أو الملصق <span>*</span></label>
+                <input type="text" id="subTitle" required placeholder="العنوان الكامل للبحث">
+              </div>
+              <div class="form-group">
+                <label for="subType">نوع المشاركة <span>*</span></label>
+                <select id="subType" required>
+                  <option value="poster">ملصق علمي (بوستر)</option>
+                  <option value="lecture">محاضرة</option>
+                  <option value="full_paper">بحث كامل</option>
+                </select>
+              </div>
+              <div class="form-group full">
+                <label for="subCV">السيرة الذاتية (CV) — PDF</label>
+                <input type="file" id="subCV" accept=".pdf" class="form-file">
+              </div>
+              <div class="form-group full">
+                <label for="subPhoto">الصورة الشخصية</label>
+                <input type="file" id="subPhoto" accept="image/*" class="form-file">
+              </div>
+              <button type="submit" class="btn btn-gold btn-submit">
+                <i class="fas fa-paper-plane"></i> تقديم البحث
+              </button>
+            </form>
+            <div class="reg-success" id="subSuccess" style="display:none;">
+              <i class="fas fa-check-circle"></i>
+              <h3>تم تقديم بحثك بنجاح!</h3>
+              <p>سيتم مراجعته من قبل اللجنة العلمية والتواصل معك.</p>
+            </div>
+          </div>
+          <div class="reg-workshops-card">
+            <h3><i class="fas fa-info-circle"></i> معلومات التقديم</h3>
+            <div style="font-size:0.9rem;color:var(--gray-600);line-height:1.8;">
+              <p><i class="fas fa-check-circle" style="color:var(--gold);"></i> يمكنك تقديم بحث كامل، ملصق علمي، أو محاضرة.</p>
+              <p><i class="fas fa-check-circle" style="color:var(--gold);"></i> سيتم تقييم الأبحاث من قبل اللجنة العلمية.</p>
+              <p><i class="fas fa-check-circle" style="color:var(--gold);"></i> سيتم إعلامك بحالة قبول بحثك عبر البريد الإلكتروني.</p>
+              <p><i class="fas fa-check-circle" style="color:var(--gold);"></i> يمكنك إرفاق ملفات البحث لاحقاً من خلال التواصل معنا.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====== SPONSORS SECTION ====== -->
+  <section class="section" id="section-sponsors">
+    <div class="container section-pad">
+      <div class="section-title">
+        <h2>الرعاة والشركاء</h2>
+        <div class="title-line"></div>
+        <p class="section-subtitle">شركاؤنا في النجاح</p>
+      </div>
+      <div class="sponsors-grid" id="sponsorsGrid"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ====== FOOTER ====== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg viewBox="0 0 48 48" width="40" height="40">
+            <circle cx="24" cy="24" r="22" fill="#002366" stroke="#D4AF37" stroke-width="2"/>
+            <text x="24" y="20" text-anchor="middle" fill="#D4AF37" font-size="10" font-family="Inter">☤</text>
+            <text x="24" y="34" text-anchor="middle" fill="#fff" font-size="7" font-family="Inter">2026</text>
+          </svg>
+          <span>AUHMC 2026</span>
+        </div>
+        <p>المؤتمر العلمي الأول لمشفى حلب الجامعي<br>Aleppo University Hospital Medical Conference</p>
+      </div>
+      <div class="footer-links">
+        <h4>روابط سريعة</h4>
+        <ul>
+          <li><a href="#" data-nav="home">الرئيسية</a></li>
+          <li><a href="#" data-nav="tracks">المسارات</a></li>
+          <li><a href="#" data-nav="schedule">البرنامج</a></li>
+          <li><a href="#" data-nav="registration">التسجيل</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>تواصل معنا</h4>
+        <p><i class="fas fa-envelope"></i> info@auhmc2026.sy</p>
+        <p><i class="fas fa-phone"></i> +963 21 2XXXXXX</p>
+        <p><i class="fas fa-map-marker-alt"></i> مشفى حلب الجامعي، حلب، سورية</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 AUHMC — جميع الحقوق محفوظة</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ====== SCROLL TO TOP ====== -->
+<button id="scrollTop" class="scroll-top" aria-label="العودة للأعلى">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="app.js"></script>
+</body>
+</html>

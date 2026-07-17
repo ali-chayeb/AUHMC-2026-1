@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة التحكم — AUHMC 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+
+<!-- ====== TOAST ====== -->
+<div class="toast" id="toast"></div>
+
+<!-- ====== LOGIN PAGE ====== -->
+<div class="login-page" id="loginPage">
+  <div class="login-card">
+    <h1>🔐 لوحة التحكم</h1>
+    <p>AUHMC 2026 — المؤتمر العلمي الأول لمشفى حلب الجامعي</p>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="loginEmail">البريد الإلكتروني</label>
+        <input type="email" id="loginEmail" placeholder="admin@auhmc2026.sy" autocomplete="username" value="admin@auhmc2026.sy">
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">كلمة المرور</label>
+        <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور" autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn-admin"><i class="fas fa-lock"></i> دخول</button>
+      <div class="login-error" id="loginError">كلمة المرور خاطئة! حاول مرة أخرى.</div>
+    </form>
+    <p style="margin-top:20px;font-size:0.8rem;color:#a0aec0;">كلمة المرور الافتراضية: <strong>admin2026</strong></p>
+  </div>
+</div>
+
+<!-- ====== ADMIN PANEL ====== -->
+<div class="admin-wrapper" id="adminWrapper">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <h2><i class="fas fa-cog"></i> الإدارة</h2>
+      <small>AUHMC 2026</small>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="active" data-admin-page="hero"><i class="fas fa-home"></i> الرئيسية</a>
+      <a href="#" data-admin-page="tracks"><i class="fas fa-flask"></i> المسارات</a>
+      <a href="#" data-admin-page="schedule"><i class="fas fa-calendar-alt"></i> البرنامج</a>
+      <a href="#" data-admin-page="committees"><i class="fas fa-users"></i> اللجان</a>
+      <a href="#" data-admin-page="workshops"><i class="fas fa-tools"></i> الورشات</a>
+      <a href="#" data-admin-page="sponsors"><i class="fas fa-handshake"></i> الرعاة</a>
+      <a href="#" data-admin-page="registrations"><i class="fas fa-address-book"></i> التسجيلات</a>
+      <a href="#" data-admin-page="submissions"><i class="fas fa-file-alt"></i> التقديمات</a>
+      <a href="#" data-admin-page="posters"><i class="fas fa-paste"></i> البوسترات</a>
+      <a href="#" data-admin-page="media"><i class="fas fa-images"></i> الوسائط</a>
+      <a href="#" data-admin-page="theme"><i class="fas fa-palette"></i> المظهر</a>
+      <a href="#" data-admin-page="settings"><i class="fas fa-wrench"></i> الإعدادات</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="admin-main">
+    <header class="admin-header">
+      <h3 id="pageTitle">الرئيسية</h3>
+      <div class="header-actions">
+        <a href="index.html" class="btn-admin-sm" target="_blank"><i class="fas fa-external-link-alt"></i> معاينة الموقع</a>
+        <button class="btn-admin-sm btn-danger" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> خروج</button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- ====== HERO PAGE ====== -->
+      <div class="admin-page active" id="admin-hero">
+        <h2><i class="fas fa-home"></i> تحرير الصفحة الرئيسية</h2>
+        <div class="admin-card">
+          <h3><i class="fas fa-heading"></i> النصوص الرئيسية</h3>
+          <form class="admin-form" id="heroForm">
+            <div class="form-group">
+              <label>الشارة (Badge)</label>
+              <input type="text" id="heroBadge" value="المؤتمر العلمي الأول">
+            </div>
+            <div class="form-group">
+              <label>العنوان الرئيسي</label>
+              <input type="text" id="heroTitle" value="مشفى حلب الجامعي">
+            </div>
+            <div class="form-group">
+              <label>العنوان الفرعي (بالإنجليزية)</label>
+              <input type="text" id="heroSubtitle" value="AUH Medical Conference 2026">
+            </div>
+            <div class="form-group">
+              <label>الاقتباس</label>
+              <textarea id="heroQuote">معًا نحو نظام صحي متكامل.. رؤى طبية متجددة لغدٍ صحي أفضل</textarea>
+            </div>
+            <div class="form-group">
+              <label>تاريخ المؤتمر (للعد التنازلي)</label>
+              <input type="datetime-local" id="heroDate">
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-sm btn-success"><i class="fas fa-save"></i> حفظ</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="admin-card">
+          <h3><i class="fas fa-chart-bar"></i> إحصائيات سريعة</h3>
+          <form class="admin-form" id="statsForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>الأيام العلمية</label>
+                <input type="text" id="statDays" value="5">
+              </div>
+              <div class="form-group">
+                <label>المسارات البحثية</label>
+                <input type="text" id="statTracks" value="8">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>محاضرة وورشة</label>
+                <input type="text" id="statLectures" value="40+">
+              </div>
+              <div class="form-group">
+                <label>مشارك</label>
+                <input type="text" id="statParticipants" value="300+">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>وصف المؤتمر</label>
+              <textarea id="heroDescription">ينطلق المؤتمر العلمي الأول لمشفى حلب الجامعي (AUHMC 2026) ليجمع الأطباء الاختصاصيين، المقيمين، والكوادر التمريضية من مختلف المشافي التعليمية والصحية في سورية، في محفل أكاديمي رائد يهدف إلى تبادل الخبرات، عرض أحدث المستجدات الطبية، وتطوير المهارات السريرية عبر محاضرات ورش عمل تفاعلية.</textarea>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-sm btn-success"><i class="fas fa-save"></i> حفظ</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ====== TRACKS PAGE ====== -->
+      <div class="admin-page" id="admin-tracks">
+        <h2><i class="fas fa-flask"></i> إدارة المسارات العلمية</h2>
+        <div class="admin-card">
+          <h3><i class="fas fa-plus-circle"></i> إضافة مسار جديد</h3>
+          <form class="admin-form" id="trackForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>المعرف (id) — بالإنجليزية</label>
+                <input type="text" id="trackId" placeholder="مثال: pediatrics" required>
+              </div>
+              <div class="form-group">
+                <label>أيقونة Font Awesome</label>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <input type="text" id="trackIcon" placeholder="مثال: fa-baby" required style="flex:1;">
+                  <button type="button" class="icon-picker-trigger" onclick="window._openIconPickerForTrack()"><i class="fas fa-icons"></i> اختر</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>اسم المسار</label>
+              <input type="text" id="trackTitle" placeholder="اسم المسار بالعربية" required>
+            </div>
+            <div class="form-group">
+              <label>الوصف</label>
+              <textarea id="trackDesc" placeholder="وصف المسار" required></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-sm btn-success"><i class="fas fa-plus"></i> إضافة</button>
+            </div>
+          </form>
+        </div>
+        <div class="admin-card">
+          <h3><i class="fas fa-list"></i> المسارات الحالية</h3>
+          <div class="items-list" id="tracksList"></div>
+        </div>
+      </div>
+
+      <!-- ====== SCHEDULE PAGE ====== -->
+      <div class="admin-page" id="admin-schedule">
+        <h2><i class="fas fa-calendar-alt"></i> إدارة البرنامج العلمي</h2>
+        <div class="admin-card">
+          <h3><i class="fas fa-plus-circle"></i> إضافة فعالية</h3>
+          <form class="admin-form" id="scheduleForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>اليوم</label>
+                <select id="schedDay" required>
+                  <option value="1">اليوم الأول</option>
+                  <option value="2">اليوم الثاني</option>
+                  <option value="3">اليوم الثالث</option>
+                  <option value="4">اليوم الرابع</option>
+                  <option value="5">اليوم الخامس</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>الوقت</label>
+                <input type="text" id="schedTime" placeholder="مثال: 12:00 – 13:30" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>عنوان الفعالية</label>
+              <input type="text" id="schedTitle" placeholder="عنوان المحاضرة أو الورشة" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>المتحدث (اختياري)</label>
+                <input type="text" id="schedSpeaker" placeholder="اسم المتحدث">
+              </div>
+              <div class="form-group">
+                <label>المسار</label>
+                <input type="text" id="schedTrack" placeholder="مثال: عام" required>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-sm btn-success"><i class="fas fa-plus"></i> إضافة</button>
+            </div>
+          </form>
+        </div>
+        <div class="admin-card">
+          <h3><i class="fas fa-list"></i> الفعاليات الحالية</h3>
+          <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+            <button class="btn-admin-sm sched-day-filter active" data-day="all">الكل</button>
+            <button class="btn-admin-sm sched-day-filter" data-day="1">اليوم 1</button>
+            <button class="btn-admin-sm sched-day-filter" data-day="2">اليوم 2</button>
+            <button class="btn-admin-sm sched-day-filter" data-day="3">اليوم 3</button>
+            <button class="btn-admin-sm sched-day-filter" data-day="4">اليوم 4</button>
+            <button class="btn-admin-sm sched-day-filter" data-day="5">اليوم 5</button>
+          </div>
+          <div class="items-list" id="scheduleList"></div>
+        </div>
+      </div>
+
+      <!-- ====== COMMITTEES PAGE ====== -->
+      <div class="admin-page" id="admin-committees">
+        <h2><i class="fas fa-users"></i> إدارة اللجان</h2>
+        <div class="admin-card">
+          <h3><i class="fas fa-plus-circle"></i> إضافة لجنة</h3>
+          <form class="admin-form" id="committeeForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>أيقونة Font Awesome</label>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <input type="text" id="commIcon" placeholder="fa-crown" required style="flex:1;">
+                  <button type="button" class="icon-picker-trigger" onclick="window._openIconPickerForCommittee()"><i class="fas fa-icons"></i> اختر</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>اسم اللجنة</label>
+                <input type="text" id="commTitle" placeholder="اللجنة العليا" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>الوصف</label>
+              <textarea id="commDesc" placeholder="وصف مهام اللجنة" required></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-sm btn-success"><i class="fas fa-plus"></i> إضافة</button>
+            </div>
+          </form>
+        </div>
+        <div class="admin-card">
+          <h3><i class="fas fa-list"></i> اللجان الحالية</h3>
+          <div class="items-list" id="committeesList"></div>
+        </div>
+      </div>
+
+      <!-- ====== WORKSHOPS PAGE ====== -->
+      <div class="admin-page" id="admin-workshops">
+        <h2><i class="fas fa-tools"></i> إدارة ورشات العمل</h2>
+        <div class="admin-card">
+          <h3><i class="fas fa-plus-circle"></i> إضافة ورشة</h3>
+          <form class="admin-form" id="workshopForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>اسم الورشة</label>
+                <input type="text" id="wsName" placeholder="اسم الورشة" required>
+              </div>
+              <div class="form-group">
+                <label>الطاقة الاستيعابية</label>
+                <input type="number" id="wsCapacity" placeholder="عدد المقاعد" required>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-sm btn-success"><i class="fas fa-plus"></i> إضافة</button>
+            </div>
+          </form>
+        </div>
+        <div class="admin-card">
+          <h3><i class="fas fa-list"></i> الورشات الحالية</h3>
+          <div class="items-list" id="workshopsList"></div>
+        </div>
+      </div>
+
+      <!-- ====== SPONSORS PAGE ====== -->
+      <div class="admin-page" id="admin-sponsors">
+        <h2><i class="fas fa-handshake"></i> إدارة الرعاة</h2>
+        <div class="admin-card">
+          <h3><i class="fas fa-plus-circle"></i> إضافة راعي</h3>
+          <form class="admin-form" id="sponsorForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>اسم الراعي</label>
+                <input type="text" id="spName" placeholder="اسم الراعي" required>
+              </div>
+              <div class="form-group">
+                <label>التصنيف</label>
+                <select id="spTier" required>
+                  <option value="الراعي الماسي">الراعي الماسي</option>
+                  <option value="الراعي الذهبي">الراعي الذهبي</option>
+                  <option value="الراعي الفضي">الراعي الفضي</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>الوصف</label>
+              <textarea id="spDesc" placeholder="وصف الراعي"></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-sm btn-success"><i class="fas fa-plus"></i> إضافة</button>
+            </div>
+          </form>
+        </div>
+        <div class="admin-card">
+          <h3><i class="fas fa-list"></i> الرعاة الحاليون</h3>
+          <div class="items-list" id="sponsorsList"></div>
+        </div>
+      </div>
+
+      <!-- ====== REGISTRATIONS PAGE ====== -->
+      <div class="admin-page" id="admin-registrations">
+        <h2><i class="fas fa-address-book"></i> التسجيلات</h2>
+        <div class="admin-card">
+          <h3><i class="fas fa-chart-simple"></i> إحصائيات سريعة</h3>
+          <div id="registrationsStats" style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+            <div class="stat-box" style="flex:1;min-width:120px;background:var(--primary);color:white;padding:1rem;border-radius:8px;text-align:center;">
+              <div style="font-size:1.5rem;font-weight:700;" id="statTotalRegistrations">0</div>
+              <div style="font-size:0.8rem;opacity:0.8;">إجمالي المسجلين</div>
+            </div>
+            <div class="stat-box" style="flex:1;min-width:120px;background:var(--gold);color:#1a1a2e;padding:1rem;border-radius:8px;text-align:center;">
+              <div style="font-size:1.5rem;font-weight:700;" id="statTodayRegistrations">0</div>
+              <div style="font-size:0.8rem;opacity:0.8;">تسجيلات اليوم</div>
+            </div>
+            <div class="stat-box" style="flex:1;min-width:120px;background:#2d3748;color:white;padding:1rem;border-radius:8px;text-align:center;">
+              <div style="font-size:1.5rem;font-weight:700;" id="statTotalSubmissions">0</div>
+              <div style="font-size:0.8rem;opacity:0.8;">إجمالي التقديمات</div>
+            </div>
+            <div class="stat-box" style="flex:1;min-width:120px;background:#e53e3e;color:white;padding:1rem;border-radius:8px;text-align:center;">
+              <div style="font-size:1.5rem;font-weight:700;" id="statPendingSubmissions">0</div>
+              <div style="font-size:0.8rem;opacity:0.8;">بإنتظار المراجعة</div>
+            </div>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h3><i class="fas fa-list"></i> قائمة المسجلين</h3>
+          <div id="registrationsContainer">
+            <p style="color:var(--gray-500);text-align:center;padding:2rem;">جاري تحميل التسجيلات...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== SUBMISSIONS PAGE ====== -->
+      <div class="admin-page" id="admin-submissions">
+        <h2><i class="fas fa-file-alt"></i> إدارة التقديمات العلمية</h2>
+        <div class="admin-card">
+          <h3><i class="fas fa-list"></i> قائمة الأبحاث المقدمة</h3>
+          <div id="submissionsContainer">
+            <p style="color:var(--gray-500);text-align:center;padding:2rem;">جاري تحميل التقديمات...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== POSTERS PAGE ====== -->
+      <div class="admin-page" id="admin-posters">
+        <h2><i class="fas fa-paste"></i> إدارة البوسترات العلمية</h2>
+        <div class="admin-card">
+          <h3><i class="fas fa-plus-circle"></i> إضافة بوستر</h3>
+          <form class="admin-form" id="posterForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>عنوان البوستر</label>
+                <input type="text" id="posterTitle" placeholder="عنوان البحث" required>
+              </div>
+              <div class="form-group">
+                <label>اسم الباحث</label>
+                <input type="text" id="posterResearcher" placeholder="اسم الباحث" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>الاختصاص</label>
+                <input type="text" id="posterSpecialty" placeholder="الاختصاص">
+              </div>
+              <div class="form-group">
+                <label>رابط الصورة</label>
+                <input type="text" id="posterImageUrl" placeholder="URL الصورة">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>الوصف</label>
+              <textarea id="posterDescription" placeholder="وصف البوستر"></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-sm btn-success"><i class="fas fa-plus"></i> إضافة</button>
+            </div>
+          </form>
+        </div>
+        <div class="admin-card">
+          <h3><i class="fas fa-list"></i> البوسترات الحالية</h3>
+          <div class="items-list" id="postersList"></div>
+        </div>
+      </div>
+
+      <!-- ====== MEDIA PAGE ====== -->
+      <div class="admin-page" id="admin-media">
+        <h2><i class="fas fa-images"></i> إدارة الوسائط</h2>
+        <div class="admin-card">
+          <h3><i class="fas fa-file-image"></i> الشعار (Logo)</h3>
+          <div class="logo-preview" id="logoPreview"><i class="fas fa-image"></i></div>
+          <input type="file" accept="image/*" id="logoInput" style="margin-bottom:8px;">
+          <p style="font-size:0.8rem;color:var(--admin-text-light);">اختر صورة لاستخدامها كشعار. الصورة ستُحفظ في المتصفح.</p>
+          <div style="margin-top:8px;">
+            <button class="btn-admin-sm btn-danger" id="removeLogoBtn"><i class="fas fa-trash"></i> إزالة الشعار</button>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <h3><i class="fas fa-image"></i> صورة الخلفية (Hero Background)</h3>
+          <div class="bg-preview" id="bgPreview"><i class="fas fa-mountain"></i></div>
+          <input type="file" accept="image/*" id="bgUpload" style="margin-bottom:8px;">
+          <p style="font-size:0.8rem;color:var(--admin-text-light);">اختر صورة لخلفية القسم الرئيسي.</p>
+          <div style="margin-top:8px;">
+            <button class="btn-admin-sm btn-danger" id="removeBgBtn"><i class="fas fa-trash"></i> إزالة الخلفية</button>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <h3><i class="fas fa-palette"></i> لون الخلفية الأساسي (للhero)</h3>
+          <div class="color-input-group">
+            <input type="color" id="heroBgColor" value="#002366">
+            <input type="text" id="heroBgColorText" value="#002366">
+          </div>
+          <div style="margin-top:8px;">
+            <button class="btn-admin-sm btn-success" id="saveHeroBgColor"><i class="fas fa-save"></i> حفظ لون الخلفية</button>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <h3><i class="fas fa-adjust"></i> شفافية طبقة التعتيم (Overlay)</h3>
+          <p style="font-size:0.85rem;color:var(--admin-text-light);margin-bottom:8px;">عند استخدام صورة خلفية، تحكم بدرجة شفافية الطبقة الداكنة فوقها.</p>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <input type="range" id="overlayOpacityRange" min="0" max="1" step="0.05" value="0.4" style="flex:1;">
+            <span id="overlayOpacityValue" style="font-weight:600;min-width:40px;text-align:center;">0.40</span>
+          </div>
+          <div style="margin-top:8px;">
+            <button class="btn-admin-sm btn-success" id="saveOverlayOpacity"><i class="fas fa-save"></i> حفظ الشفافية</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== THEME PAGE ====== -->
+      <div class="admin-page" id="admin-theme">
+        <h2><i class="fas fa-palette"></i> تخصيص المظهر</h2>
+        <div class="admin-card">
+          <h3><i class="fas fa-paint-brush"></i> الألوان الأساسية</h3>
+          <form class="admin-form" id="themeForm">
+            <div class="form-group">
+              <label>اللون الأساسي (Primary)</label>
+              <div class="color-input-group">
+                <input type="color" id="colorPrimary" value="#002366">
+                <input type="text" id="colorPrimaryText" value="#002366">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>اللون الذهبي (Gold)</label>
+              <div class="color-input-group">
+                <input type="color" id="colorGold" value="#D4AF37">
+                <input type="text" id="colorGoldText" value="#D4AF37">
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-sm btn-success"><i class="fas fa-save"></i> حفظ الألوان</button>
+              <button type="button" class="btn-admin-sm" id="resetColorsBtn"><i class="fas fa-undo"></i> إعادة الألوان الافتراضية</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="admin-card">
+          <h3><i class="fas fa-pen"></i> تخصيص الفوتر</h3>
+          <form class="admin-form" id="footerForm">
+            <div class="form-group">
+              <label>نص الفوتر السفلي</label>
+              <input type="text" id="footerText" value="© 2026 AUHMC — جميع الحقوق محفوظة">
+            </div>
+            <div class="form-group">
+              <label>البريد الإلكتروني للتواصل</label>
+              <input type="email" id="footerEmail" value="info@auhmc2026.sy">
+            </div>
+            <div class="form-group">
+              <label>رقم الهاتف</label>
+              <input type="text" id="footerPhone" value="+963 21 2XXXXXX">
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-sm btn-success"><i class="fas fa-save"></i> حفظ</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ====== SETTINGS PAGE ====== -->
+      <div class="admin-page" id="admin-settings">
+        <h2><i class="fas fa-wrench"></i> الإعدادات</h2>
+
+        <div class="admin-card">
+          <h3><i class="fas fa-key"></i> تغيير كلمة المرور</h3>
+          <form class="admin-form" id="passwordForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>كلمة المرور الحالية</label>
+                <input type="password" id="currentPassword" required>
+              </div>
+              <div class="form-group">
+                <label>كلمة المرور الجديدة</label>
+                <input type="password" id="newPassword" required>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-sm"><i class="fas fa-save"></i> تغيير كلمة المرور</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="admin-card">
+          <h3><i class="fas fa-download"></i> تصدير واستيراد الإعدادات</h3>
+          <div class="settings-actions">
+            <button class="btn-admin-sm" id="exportBtn"><i class="fas fa-download"></i> تصدير الإعدادات (JSON)</button>
+            <button class="btn-admin-sm" id="importBtn" style="position:relative;">
+              <i class="fas fa-upload"></i> استيراد الإعدادات
+              <input type="file" accept=".json" id="importFile" style="position:absolute;inset:0;opacity:0;cursor:pointer;">
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <h3><i class="fas fa-exclamation-triangle" style="color:#e53e3e;"></i> إعادة تعيين</h3>
+          <p style="font-size:0.9rem;color:var(--admin-text-light);margin-bottom:12px;">سيتم حذف جميع التخصيصات واستعادة الإعدادات الافتراضية. لا يمكن التراجع عن هذا الإجراء.</p>
+          <button class="btn-admin-sm btn-danger" id="resetAllBtn"><i class="fas fa-trash"></i> إعادة تعيين كل شيء</button>
+        </div>
+      </div>
+
+    </div><!-- /admin-content -->
+  </div><!-- /admin-main -->
+</div><!-- /admin-wrapper -->
+
+<!-- ====== ICON PICKER MODAL ====== -->
+<div class="icon-picker-modal" id="iconPickerModal" style="display:none;">
+  <div class="icon-picker-overlay" id="iconPickerOverlay"></div>
+  <div class="icon-picker-container">
+    <div class="icon-picker-header">
+      <h3><i class="fas fa-icons"></i> اختر أيقونة</h3>
+      <button class="icon-picker-close" id="iconPickerClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="icon-picker-search">
+      <input type="text" id="iconPickerSearch" placeholder="ابحث عن أيقونة...">
+    </div>
+    <div class="icon-picker-grid" id="iconPickerGrid"></div>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>
