@@ -1,3 +1,8 @@
+// ============================================
+// AUHMC 2026 - JWT Authentication Middleware
+// Uses config.js - NO .env dependency
+// ============================================
+
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 

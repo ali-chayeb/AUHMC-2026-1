@@ -1,81 +1,256 @@
+// ============================================
+// AUHMC 2026 - MySQL Database Connection
+// Creates all tables + default admin on startup
+// ============================================
+
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
+const config = require('./config');
 
+// Create connection pool
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'auhmc_admin',
-  password: process.env.DB_PASSWORD || 'test123',
-  database: process.env.DB_NAME || 'auhmc2026',
+  host: config.DB_HOST,
+  user: config.DB_USER,
+  password: config.DB_PASSWORD,
+  database: config.DB_NAME,
   waitForConnections: true,
-  connectionLimit: 10,
+  connectionLimit: config.DB_CONNECTION_LIMIT,
   queueLimit: 0
 });
 
-const dbApi = {
+// ============================================
+// DATABASE API (async/await - NO transactions)
+// ============================================
+const db = {
+  // Get single row
   get: async (sql, params = []) => {
     const [rows] = await pool.execute(sql, params);
     return rows[0] || null;
   },
+
+  // Get all rows
   all: async (sql, params = []) => {
     const [rows] = await pool.execute(sql, params);
     return rows;
   },
+
+  // Insert/Update/Delete
   run: async (sql, params = []) => {
     const [result] = await pool.execute(sql, params);
-    return { lastInsertRowid: result.insertId, changes: result.affectedRows };
+    return { insertId: result.insertId, affectedRows: result.affectedRows };
   },
+
+  // Raw execute (for CREATE TABLE, etc.)
   exec: async (sql) => {
     await pool.execute(sql);
   },
-  transaction: (fn) => fn,
-  getConnection: async () => await pool.getConnection()
+
+  // Get connection from pool (for transactions if needed)
+  getConnection: async () => {
+    return await pool.getConnection();
+  }
 };
 
+// ============================================
+// INITIALIZE TABLES
+// ============================================
 async function initializeDatabase() {
-  const conn = await pool.getConnection();
+  console.log('🗄️  Initializing MySQL database...');
+
   try {
-    await conn.execute(`CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(255) UNIQUE NOT NULL, password VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
-    await conn.execute(`CREATE TABLE IF NOT EXISTS registrations (id INT AUTO_INCREMENT PRIMARY KEY, type VARCHAR(50) NOT NULL DEFAULT 'attendance', name VARCHAR(255) NOT NULL, phone VARCHAR(50) NOT NULL, email VARCHAR(255), specialty VARCHAR(255), workplace VARCHAR(255), workshops TEXT, category VARCHAR(100) DEFAULT '', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, INDEX idx_type (type)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
-    await conn.execute(`CREATE TABLE IF NOT EXISTS content (id INT AUTO_INCREMENT PRIMARY KEY, \`key\` VARCHAR(100) UNIQUE NOT NULL, value TEXT NOT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
-    await conn.execute(`CREATE TABLE IF NOT EXISTS tracks (id INT AUTO_INCREMENT PRIMARY KEY, track_id VARCHAR(100) UNIQUE NOT NULL, icon VARCHAR(100) NOT NULL, title VARCHAR(255) NOT NULL, \`desc\` TEXT NOT NULL, sort_order INT DEFAULT 0) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
-    await conn.execute(`CREATE TABLE IF NOT EXISTS schedule (id INT AUTO_INCREMENT PRIMARY KEY, day INT NOT NULL, time VARCHAR(100) NOT NULL, title VARCHAR(255) NOT NULL, speaker VARCHAR(255) DEFAULT '', track VARCHAR(255) NOT NULL, sort_order INT DEFAULT 0) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
-    await conn.execute(`CREATE TABLE IF NOT EXISTS committees (id INT AUTO_INCREMENT PRIMARY KEY, icon VARCHAR(100) NOT NULL, title VARCHAR(255) NOT NULL, \`desc\` TEXT NOT NULL, sort_order INT DEFAULT 0) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
-    await conn.execute(`CREATE TABLE IF NOT EXISTS workshops (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, capacity INT NOT NULL, sort_order INT DEFAULT 0) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
-    await conn.execute(`CREATE TABLE IF NOT EXISTS sponsors (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, tier VARCHAR(100) NOT NULL, \`desc\` TEXT DEFAULT '', logo_url VARCHAR(500) DEFAULT '', image VARCHAR(500) DEFAULT '', sort_order INT DEFAULT 0) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
-    await conn.execute(`CREATE TABLE IF NOT EXISTS submissions (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, phone VARCHAR(50) NOT NULL, email VARCHAR(255), degree VARCHAR(255) DEFAULT '', affiliation VARCHAR(255) DEFAULT '', title VARCHAR(500) NOT NULL, submission_type VARCHAR(50) NOT NULL DEFAULT 'poster', status VARCHAR(50) NOT NULL DEFAULT 'pending', cv_path VARCHAR(500) DEFAULT '', photo_path VARCHAR(500) DEFAULT '', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
-    await conn.execute(`CREATE TABLE IF NOT EXISTS submission_files (id INT AUTO_INCREMENT PRIMARY KEY, submission_id INT NOT NULL, file_type VARCHAR(50) NOT NULL, file_path VARCHAR(500) NOT NULL, original_name VARCHAR(255) NOT NULL, file_size INT DEFAULT 0, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (submission_id) REFERENCES submissions(id) ON DELETE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
-    await conn.execute(`CREATE TABLE IF NOT EXISTS posters (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, researcher_name VARCHAR(255) NOT NULL, specialty VARCHAR(255) DEFAULT '', image_url VARCHAR(500) DEFAULT '', description TEXT DEFAULT '', sort_order INT DEFAULT 0, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
+    // Users table (admins)
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
 
-    const [adminRows] = await conn.execute('SELECT id FROM users WHERE email = ?', ['admin@auhmc2026.sy']);
-    if (adminRows.length === 0) {
-      const hashedPassword = bcrypt.hashSync('admin2026', 10);
-      await conn.execute('INSERT INTO users (email, password, name) VALUES (?, ?, ?)', ['admin@auhmc2026.sy', hashedPassword, 'مدير الموقع']);
-      console.log('✅ Default admin created');
+    // Registrations table (attendees)
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS registrations (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        type VARCHAR(50) NOT NULL DEFAULT 'attendance',
+        name VARCHAR(255) NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        email VARCHAR(255),
+        specialty VARCHAR(255),
+        workplace VARCHAR(255),
+        workshops TEXT,
+        category VARCHAR(100) DEFAULT '',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_type (type),
+        INDEX idx_created (created_at)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Content table (key-value for hero, stats, theme, footer)
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS content (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        \`key\` VARCHAR(100) UNIQUE NOT NULL,
+        value TEXT NOT NULL,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Tracks table
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS tracks (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        track_id VARCHAR(100) UNIQUE NOT NULL,
+        icon VARCHAR(100) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        \`desc\` TEXT NOT NULL,
+        sort_order INT DEFAULT 0
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Schedule table
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS schedule (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        day INT NOT NULL,
+        time VARCHAR(100) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        speaker VARCHAR(255) DEFAULT '',
+        track VARCHAR(255) NOT NULL,
+        sort_order INT DEFAULT 0,
+        INDEX idx_day (day)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Committees table
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS committees (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        icon VARCHAR(100) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        \`desc\` TEXT NOT NULL,
+        sort_order INT DEFAULT 0
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Workshops table
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS workshops (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        capacity INT NOT NULL,
+        sort_order INT DEFAULT 0
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Sponsors table
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS sponsors (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        tier VARCHAR(100) NOT NULL,
+        \`desc\` TEXT DEFAULT '',
+        logo_url VARCHAR(500) DEFAULT '',
+        image VARCHAR(500) DEFAULT '',
+        sort_order INT DEFAULT 0
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Submissions table (scientific papers)
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS submissions (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        email VARCHAR(255),
+        degree VARCHAR(255) DEFAULT '',
+        affiliation VARCHAR(255) DEFAULT '',
+        title VARCHAR(500) NOT NULL,
+        submission_type VARCHAR(50) NOT NULL DEFAULT 'poster',
+        status VARCHAR(50) NOT NULL DEFAULT 'pending',
+        cv_path VARCHAR(500) DEFAULT '',
+        photo_path VARCHAR(500) DEFAULT '',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_status (status)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Submission files table
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS submission_files (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        submission_id INT NOT NULL,
+        file_type VARCHAR(50) NOT NULL,
+        file_path VARCHAR(500) NOT NULL,
+        original_name VARCHAR(255) NOT NULL,
+        file_size INT DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (submission_id) REFERENCES submissions(id) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Posters table
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS posters (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        researcher_name VARCHAR(255) NOT NULL,
+        specialty VARCHAR(255) DEFAULT '',
+        image_url VARCHAR(500) DEFAULT '',
+        description TEXT DEFAULT '',
+        sort_order INT DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Create default admin if not exists
+    const adminExists = await db.get('SELECT id FROM users WHERE email = ?', [config.ADMIN_EMAIL]);
+    if (!adminExists) {
+      const hashedPassword = bcrypt.hashSync(config.ADMIN_PASSWORD, 10);
+      await db.run(
+        'INSERT INTO users (email, password, name) VALUES (?, ?, ?)',
+        [config.ADMIN_EMAIL, hashedPassword, config.ADMIN_NAME]
+      );
+      console.log('✅ Default admin created:', config.ADMIN_EMAIL);
     }
 
-    const [contentRows] = await conn.execute('SELECT COUNT(*) as c FROM content');
-    if (contentRows[0].c === 0) {
-      const seedContent = [
-        ['hero_badge', 'المؤتمر العلمي الأول'], ['hero_title', 'مشفى حلب الجامعي'],
-        ['hero_subtitle', 'AUH Medical Conference 2026'], ['hero_date', '2026-10-15T09:00'],
-        ['hero_bgColor', '#002366'], ['stat_days', '5'], ['stat_tracks', '8'],
-        ['stat_lectures', '40+'], ['stat_participants', '300+'],
-        ['theme_primary', '#002366'], ['theme_gold', '#D4AF37'],
+    // Seed default content if empty
+    const contentCount = await db.get('SELECT COUNT(*) as c FROM content');
+    if (contentCount.c === 0) {
+      const defaultContent = [
+        ['hero_badge', 'المؤتمر العلمي الأول'],
+        ['hero_title', 'مشفى حلب الجامعي'],
+        ['hero_subtitle', 'AUH Medical Conference 2026'],
+        ['hero_date', '2026-10-15T09:00'],
+        ['hero_bgColor', '#002366'],
+        ['stat_days', '5'],
+        ['stat_tracks', '8'],
+        ['stat_lectures', '40+'],
+        ['stat_participants', '300+'],
+        ['theme_primary', '#002366'],
+        ['theme_gold', '#D4AF37'],
         ['footer_text', '© 2026 AUHMC — جميع الحقوق محفوظة'],
-        ['footer_email', 'info@auhmc2026.sy'], ['footer_phone', '+963 21 2XXXXXX']
+        ['footer_email', 'info@auhmc2026.sy'],
+        ['footer_phone', '+963 21 2XXXXXX']
       ];
-      for (const [k, v] of seedContent) {
-        await conn.execute('INSERT INTO content (`key`, value) VALUES (?, ?)', [k, v]);
+      for (const [key, value] of defaultContent) {
+        await db.run('INSERT INTO content (`key`, value) VALUES (?, ?)', [key, value]);
       }
-      console.log('✅ Seeded content');
+      console.log('✅ Default content seeded');
     }
-    console.log('✅ MySQL database initialized');
+
+    console.log('✅ MySQL database initialized successfully');
   } catch (err) {
-    console.error('❌ Database init error:', err);
-  } finally {
-    conn.release();
+    console.error('❌ Database initialization failed:', err.message);
+    throw err;
   }
 }
 
-initializeDatabase();
-module.exports = dbApi;
+// Initialize on require
+initializeDatabase().catch(err => {
+  console.error('❌ Failed to start database:', err.message);
+  process.exit(1);
+});
+
+module.exports = db;
