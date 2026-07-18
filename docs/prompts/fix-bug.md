@@ -1,22 +1,7 @@
-# Prompt: Fix Bug
+# Fix Bug Prompt
 
-Copy this text to AI, fill in details:
+Copy to AI:
 
----
-
-Fix this bug in AUHMC 2026:
-
-Bug: [DESCRIBE BUG]
-Expected: [WHAT SHOULD HAPPEN]
-Steps: [HOW TO REPRODUCE]
-
-Context:
-- MySQL via mysql2/promise
-- JWT in config.js
-- No .env, no SQLite
-- Routes: src/server/routes/
-
-Error:
-[PASTE ERROR]
-
-Read docs/Cline/ first.
+Fix bug: [DESCRIPTION]
+- MySQL, no .env, no SQLite
+- Read docs/Cline/ first

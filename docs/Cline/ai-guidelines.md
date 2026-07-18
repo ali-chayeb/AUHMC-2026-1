@@ -1,34 +1,11 @@
-# AI Development Guidelines - AUHMC 2026
+# AI Guidelines - AUHMC 2026
 
-## CRITICAL RULES
-
-### 1. NO .env FILES
-- ALL configuration is in src/server/config.js
-- Never create or reference .env files
-- JWT_SECRET is hardcoded in config.js
-
-### 2. MySQL ONLY - NO SQLite
-- Database: MySQL/MariaDB via mysql2/promise
-- Never install better-sqlite3 or node:sqlite
-
-### 3. NO TRANSACTION WRAPPERS
-- Use direct async/await, not db.transaction()
-
-### 4. DATABASE API
-const db = require('../database');
-await db.get(sql, [params]);  // single row
-await db.all(sql, [params]);  // all rows
-await db.run(sql, [params]);  // insert/update/delete
-await db.exec(sql);           // create table
-
-### 5. AUTHENTICATION
-const { authenticateToken } = require('../middleware/auth');
-router.get('/route', authenticateToken, async (req, res) => { });
-
-### 6. DEFAULT ADMIN
-Email: admin@auhmc2026.sy
-Password: admin2026
-
-### 7. TECH STACK
-Backend: Express + MySQL (mysql2/promise) + JWT + multer
-Frontend: Vanilla JavaScript SPA
+## RULES
+1. MySQL ONLY (mysql2/promise). NO SQLite.
+2. NO .env files. Config in src/server/config.js
+3. NO transactions. Use async/await directly.
+4. Database API: db.get(), db.all(), db.run(), db.exec() - ALL async
+5. NEVER modify src/frontend/ files
+6. Response messages in Arabic
+7. Default admin: admin@auhmc2026.sy / admin2026
+8. Plesk: App Root=/httpdocs, Doc Root=/httpdocs/src/frontend, Startup=src/server/server.js

@@ -1,23 +1,9 @@
-# Prompt: Add Feature
+# Add Feature Prompt
 
-Copy this text to AI, fill in [brackets]:
+Copy to AI:
 
----
-
-Add [FEATURE] to AUHMC 2026 project.
-
-Context:
-- Backend: Express + MySQL (mysql2/promise), JWT auth, config in src/server/config.js
-- Frontend: Vanilla JS SPA in src/frontend/
-- No .env, no SQLite, no transactions
-
-Database API:
-  db.get(sql, params) - single row
-  db.all(sql, params) - all rows  
-  db.run(sql, params) - insert/update/delete
-
-Requirements:
-1. [REQUIREMENT 1]
-2. [REQUIREMENT 2]
-3. Use Arabic messages
-4. Read docs/Cline/ before starting
+Add [FEATURE] to AUHMC 2026.
+- MySQL (mysql2/promise), no .env, no SQLite
+- db.get/all/run/exec - all async
+- Config in src/server/config.js
+- Read docs/Cline/ first
